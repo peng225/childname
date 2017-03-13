@@ -1,13 +1,7 @@
 #!/usr/bin/python
 
 import argparse
-
-
-def isInGoodList(a, goodList):
-	if a in goodList:
-		return True
-	else:
-		return False
+import sys
 
 
 class ChildName:
@@ -29,19 +23,19 @@ class ChildName:
 
 	def _isGoodJinkaku(self, nameKakusuus):
 		jinkaku = self._myojiKakusuus[-1] + nameKakusuus[0]
-		return isInGoodList(jinkaku, self._goodJinkakus)
+		return jinkaku in self._goodJinkakus
 	
 	def _isGoodChikaku(self, nameKakusuus):
 		chikaku = sum(nameKakusuus[1:])
-		return isInGoodList(chikaku, self._goodChikakus)
+		return chikaku in self._goodChikakus
 	
 	def _isGoodGaikaku(self, nameKakusuus):
 		gaikaku = self._myojiKakusuus[0] + sum(nameKakusuus[1:]) 
-		return isInGoodList(gaikaku, self._goodGaikakus)
+		return gaikaku in self._goodGaikakus
 	
 	def _isGoodSoukaku(self, nameKakusuus):
 		soukaku = sum(self._myojiKakusuus) + sum(nameKakusuus) 
-		return isInGoodList(soukaku, self._goodSoukakus)
+		return soukaku in self._goodSoukakus
 	
 	def _isGoodOnmyoSequence(self, nameKakusuus):
 		totalLength = len(self._myojiKakusuus) + len(nameKakusuus)
@@ -63,15 +57,16 @@ class ChildName:
 				onmyoSequence.append(1)
 	
 		if totalLength == 3:
-			return isInGoodList(onmyoSequence, self._goodThreeOnmyoSequence)
+			return onmyoSequence in self._goodThreeOnmyoSequence
 		elif totalLength == 4:
-			return isInGoodList(onmyoSequence, self._goodFourOnmyoSequence)
+			return onmyoSequence in self._goodFourOnmyoSequence
 		elif totalLength == 5:
-			return isInGoodList(onmyoSequence, self._goodFiveOnmyoSequence)
+			return onmyoSequence in self._goodFiveOnmyoSequence
 		elif totalLength == 6:
-			return isInGoodList(onmyoSequence, self._goodSixOnmyoSequence)
+			return onmyoSequence in self._goodSixOnmyoSequence
 		else:
 			print "Fatal Error."	
+			sys.exit(1)
 				
 	
 	def _isGoodKakusuu(self, nameKakusuus):
