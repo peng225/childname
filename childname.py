@@ -39,8 +39,8 @@ class ChildName:
 	
 	def _isGoodOnmyoSequence(self, nameKakusuus):
 		totalLength = len(self._myojiKakusuus) + len(nameKakusuus)
-		if totalLength < 3 and 6 < totalLength:
-			print "Warning: Onmyo sequence calculation is not supported for the length of the name."
+		if totalLength < 3 or 6 < totalLength:
+			print "Warning: Onmyo sequence calculation is not supported for the length of the name " + str(totalLength) + "."
 			return True
 	
 		onmyoSequence = []
