@@ -89,10 +89,10 @@ class ChildName:
 	
 		# Two letters
 		nameKakusuusList = []
-		for i in range(minLetterKakusuu, maxLetterKakusuu):
+		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
 			if self._isForbiddenNameFirstKakusuu(i):
 				continue
-			for j in range(minLetterKakusuu, maxLetterKakusuu):
+			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
 				nameKakusuusList.append([i, j])
 	
 		twoLetterAnswer = []
@@ -103,11 +103,11 @@ class ChildName:
 	
 		# Three letters
 		nameKakusuusList = []
-		for i in range(minLetterKakusuu, maxLetterKakusuu):
+		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
 			if self._isForbiddenNameFirstKakusuu(i):
 				continue
-			for j in range(minLetterKakusuu, maxLetterKakusuu):
-				for k in range(minLetterKakusuu, maxLetterKakusuu):
+			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
+				for k in range(minLetterKakusuu, maxLetterKakusuu + 1):
 					nameKakusuusList.append([i, j, k])
 	
 		threeLetterAnswer = []
