@@ -26,11 +26,15 @@ class ChildName:
 		return jinkaku in self._goodJinkakus
 	
 	def _isGoodChikaku(self, nameKakusuus):
-		chikaku = sum(nameKakusuus[1:])
+		chikaku = sum(nameKakusuus)
 		return chikaku in self._goodChikakus
 	
 	def _isGoodGaikaku(self, nameKakusuus):
-		gaikaku = self._myojiKakusuus[0] + sum(nameKakusuus[1:]) 
+		# Please be careful that the length of the name is assumed to be larger than 1.
+		if len(self._myojiKakusuus) == 1:
+			gaikaku = self._myojiKakusuus[0] + sum(nameKakusuus[1:]) 
+		else:
+			gaikaku = sum(self._myojiKakusuus[0:-1]) + sum(nameKakusuus[1:]) 
 		return gaikaku in self._goodGaikakus
 	
 	def _isGoodSoukaku(self, nameKakusuus):
@@ -69,7 +73,7 @@ class ChildName:
 			sys.exit(1)
 				
 	
-	def _isGoodKakusuu(self, nameKakusuus):
+	def _isGoodKakusuu(self, nameKakusuus, isVerbose):
 		if(self._isGoodJinkaku(nameKakusuus)
 			and self._isGoodChikaku(nameKakusuus)
 			and self._isGoodGaikaku(nameKakusuus)
@@ -77,6 +81,17 @@ class ChildName:
 			and self._isGoodOnmyoSequence(nameKakusuus)):
 			return True
 		else:
+			if isVerbose:
+				if not self._isGoodJinkaku(nameKakusuus):
+					print "Bad Jinkaku."
+				elif not self._isGoodChikaku(nameKakusuus):
+					print "Bad Chikaku."
+				elif not self._isGoodGaikaku(nameKakusuus):
+					print "Bad Gaikaku."
+				elif not self._isGoodSoukaku(nameKakusuus):
+					print "Bad Soukaku."
+				elif not self._isGoodOnmyoSequence(nameKakusuus):
+					print "Bad Onmyo sequence."
 			return False
 	
 	def _isForbiddenNameFirstKakusuu(self, nameFirstKakusuu):
@@ -85,12 +100,18 @@ class ChildName:
 		else:
 			return False
 	
-	def printGoodKakusuus(self, minLetterKakusuu, maxLetterKakusuu):
+	def printGoodKakusuus(self, minLetterKakusuu, maxLetterKakusuu, isVerbose):
 	
 		# Two letters
+		if isVerbose:
+			print "Start two letter kakusuu search."
 		nameKakusuusList = []
 		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
+			if isVerbose:
+				print "i: " + str(i)
 			if self._isForbiddenNameFirstKakusuu(i):
+				if isVerbose:
+					print "The kakusuu was found in the forbidden list. Skip."
 				continue
 			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
 				nameKakusuusList.append([i, j])
@@ -98,13 +119,24 @@ class ChildName:
 		twoLetterAnswer = []
 	
 		for nameKakusuus in nameKakusuusList:
-			if(self._isGoodKakusuu(nameKakusuus)):
+			if isVerbose:
+				print "Kakusuu: " + str(nameKakusuus)
+			if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
 				twoLetterAnswer.append(nameKakusuus)
 	
+		if isVerbose:
+			print "End two letter kakusuu search."
+
 		# Three letters
+		if isVerbose:
+			print "Start three letter kakusuu search."
 		nameKakusuusList = []
 		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
+			if isVerbose:
+				print "i: " + str(i)
 			if self._isForbiddenNameFirstKakusuu(i):
+				if isVerbose:
+					print "The kakusuu was found in the forbidden list. Skip."
 				continue
 			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
 				for k in range(minLetterKakusuu, maxLetterKakusuu + 1):
@@ -113,8 +145,13 @@ class ChildName:
 		threeLetterAnswer = []
 	
 		for nameKakusuus in nameKakusuusList:
-			if(self._isGoodKakusuu(nameKakusuus)):
+			if isVerbose:
+				print "Kakusuu: " + str(nameKakusuus)
+			if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
 				threeLetterAnswer.append(nameKakusuus)
+
+		if isVerbose:
+			print "End three letter kakusuu search."
 	
 	
 		print "==== Two letters ===="
@@ -132,6 +169,7 @@ def main():
 	parser = argparse.ArgumentParser(description='Print the good kakusuus of names.')
 	parser.add_argument("-m", type=int, nargs='+', required=True,
                     help='The list of the kakusuus of each letter in your family name.')
+	parser.add_argument("-v", help='Verbose mode.', action='store_true')
 	parser.add_argument("--min", type=int, default=1,
                     help='The minimum kakusuu of a letter. (default = 1)')
 	parser.add_argument("--max", type=int, default=15,
@@ -140,7 +178,7 @@ def main():
 	args = parser.parse_args()
 
 	childName = ChildName(args.m)
-	childName.printGoodKakusuus(args.min, args.max)
+	childName.printGoodKakusuus(args.min, args.max, args.v)
 
 if __name__ == "__main__":
 	main()
