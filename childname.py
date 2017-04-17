@@ -6,9 +6,9 @@ import sys
 
 class ChildName:
 	def __init__(self, myojiKakusuus, addVirtualLetter):
-		self._goodJinkakus = [11, 13, 15, 16, 17, 18, 21]
+		self._goodJinkakus = [11, 13, 15, 16, 17, 18, 21, 23]
 		self._goodChikakus = [5, 6, 7, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 31, 32, 35]
-		self._goodGaikakus = [8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 31]
+		self._goodGaikakus = [5, 6, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 31]
 		self._goodSoukakus = [13, 15, 16, 17, 18, 21, 23, 24, 25, 31, 32, 35, 37, 38, 41]
 
 		self._forbiddenNameFirstKakusuus = [3, 5, 9, 13, 15, 19, 23]
@@ -22,7 +22,7 @@ class ChildName:
 
 		self._addVirtualLetter = addVirtualLetter
 
-		if self._addVirtualLetter:
+		if self._addVirtualLetter and len(self._myojiKakusuus) == 1:
 			virtualLetter = [1]
 			self._myojiKakusuus = virtualLetter + self._myojiKakusuus
 			print "Notice: A virtual letter is added at the top of myoji and now the list of myoji kakusuu is " + str(self._myojiKakusuus) + "."
@@ -115,7 +115,7 @@ class ChildName:
 		# Two letters
 		if isVerbose:
 			print "Start two letter kakusuu search."
-		nameKakusuusList = []
+		twoLetterAnswer = []
 		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
 			if isVerbose:
 				print "i: " + str(i)
@@ -124,15 +124,11 @@ class ChildName:
 					print "The kakusuu was found in the forbidden list. Skip."
 				continue
 			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
-				nameKakusuusList.append([i, j])
-	
-		twoLetterAnswer = []
-	
-		for nameKakusuus in nameKakusuusList:
-			if isVerbose:
-				print "Kakusuu: " + str(nameKakusuus)
-			if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
-				twoLetterAnswer.append(nameKakusuus)
+				nameKakusuus = [i, j]
+				if isVerbose:
+					print "Kakusuu: " + str(nameKakusuus)
+				if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
+					twoLetterAnswer.append(nameKakusuus)
 	
 		if isVerbose:
 			print "End two letter kakusuu search."
@@ -140,7 +136,7 @@ class ChildName:
 		# Three letters
 		if isVerbose:
 			print "Start three letter kakusuu search."
-		nameKakusuusList = []
+		threeLetterAnswer = []
 		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
 			if isVerbose:
 				print "i: " + str(i)
@@ -150,16 +146,12 @@ class ChildName:
 				continue
 			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
 				for k in range(minLetterKakusuu, maxLetterKakusuu + 1):
-					nameKakusuusList.append([i, j, k])
+					nameKakusuus = [i, j, k]
+					if isVerbose:
+						print "Kakusuu: " + str(nameKakusuus)
+					if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
+						threeLetterAnswer.append(nameKakusuus)
 	
-		threeLetterAnswer = []
-	
-		for nameKakusuus in nameKakusuusList:
-			if isVerbose:
-				print "Kakusuu: " + str(nameKakusuus)
-			if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
-				threeLetterAnswer.append(nameKakusuus)
-
 		if isVerbose:
 			print "End three letter kakusuu search."
 	
