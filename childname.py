@@ -5,7 +5,7 @@ import sys
 
 
 class ChildName:
-	def __init__(self, myojiKakusuus, addVirtualLetter):
+	def __init__(self, myojiKakusuus, addVirtualLetter, onmyoSeqCheck):
 		self._goodJinkakus = [11, 13, 15, 16, 17, 18, 21, 23]
 		self._goodChikakus = [5, 6, 7, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 31, 32, 35]
 		self._goodGaikakus = [5, 6, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 31]
@@ -21,6 +21,7 @@ class ChildName:
 		self._myojiKakusuus = myojiKakusuus
 
 		self._addVirtualLetter = addVirtualLetter
+		self._onmyoSeqCheck = onmyoSeqCheck
 
 		if self._addVirtualLetter and len(self._myojiKakusuus) == 1:
 			virtualLetter = [1]
@@ -88,7 +89,7 @@ class ChildName:
 			and self._isGoodChikaku(nameKakusuus)
 			and self._isGoodGaikaku(nameKakusuus)
 			and self._isGoodSoukaku(nameKakusuus)
-			and self._isGoodOnmyoSequence(nameKakusuus)):
+			and ((not self._onmyoSeqCheck) or self._isGoodOnmyoSequence(nameKakusuus))):
 			return True
 		else:
 			if isVerbose:
@@ -100,7 +101,7 @@ class ChildName:
 					print "Bad Gaikaku."
 				elif not self._isGoodSoukaku(nameKakusuus):
 					print "Bad Soukaku."
-				elif not self._isGoodOnmyoSequence(nameKakusuus):
+				elif (self._onmyoSeqCheck and (not self._isGoodOnmyoSequence(nameKakusuus))):
 					print "Bad Onmyo sequence."
 			return False
 	
@@ -173,6 +174,7 @@ def main():
                     help='The list of the kakusuus of each letter in your family name.')
 	parser.add_argument("-v", help='Verbose mode.', action='store_true')
 	parser.add_argument("-a", help='If myoji kakusuu is 1, add a vertual letter at the top of myoji.', action='store_true')
+	parser.add_argument("-o", help='Enable Onmyo sequence check.', action='store_true')
 	parser.add_argument("--min", type=int, default=1,
                     help='The minimum kakusuu of a letter. (default = 1)')
 	parser.add_argument("--max", type=int, default=15,
@@ -180,7 +182,7 @@ def main():
 
 	args = parser.parse_args()
 
-	childName = ChildName(args.m, args.a)
+	childName = ChildName(args.m, args.a, args.o)
 	childName.printGoodKakusuus(args.min, args.max, args.v)
 
 if __name__ == "__main__":
