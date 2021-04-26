@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import argparse
 import sys
@@ -9,7 +9,8 @@ class ChildName:
 		self._goodJinkakus = [11, 13, 15, 16, 17, 18, 21, 23]
 		self._goodChikakus = [5, 6, 7, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 31, 32, 35]
 		self._goodGaikakus = [5, 6, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 31]
-		self._goodSoukakus = [13, 15, 16, 17, 18, 21, 23, 24, 25, 31, 32, 35, 37, 38, 41]
+		# self._goodSoukakus = [13, 15, 16, 17, 18, 21, 23, 24, 25, 31, 32, 35, 37, 38, 41]
+		self._goodSoukakus = [21, 23, 24, 25, 31, 32]
 
 		self._forbiddenNameFirstKakusuus = [3, 5, 9, 13, 15, 19, 23]
 
@@ -26,8 +27,8 @@ class ChildName:
 		if self._addVirtualLetter and len(self._myojiKakusuus) == 1:
 			virtualLetter = [1]
 			self._myojiKakusuus = virtualLetter + self._myojiKakusuus
-			print "Notice: A virtual letter is added at the top of myoji and now the list of myoji kakusuu is " + str(self._myojiKakusuus) + "."
-			print "        This virtual letter is used for all but Soukaku calculation."
+			print("Notice: A virtual letter is added at the top of myoji and now the list of myoji kakusuu is " + str(self._myojiKakusuus) + ".")
+			print("        This virtual letter is used for all but Soukaku calculation.")
 
 
 	def _isGoodJinkaku(self, nameKakusuus):
@@ -55,7 +56,7 @@ class ChildName:
 	def _isGoodOnmyoSequence(self, nameKakusuus):
 		totalLength = len(self._myojiKakusuus) + len(nameKakusuus)
 		if totalLength < 3 or 6 < totalLength:
-			print "Warning: Onmyo sequence calculation is not supported for the length of the name " + str(totalLength) + "."
+			print("Warning: Onmyo sequence calculation is not supported for the length of the name " + str(totalLength) + ".")
 			return True
 	
 		onmyoSequence = []
@@ -80,7 +81,7 @@ class ChildName:
 		elif totalLength == 6:
 			return onmyoSequence in self._goodSixOnmyoSequence
 		else:
-			print "Fatal Error."	
+			print("Fatal Error.")
 			sys.exit(1)
 				
 	
@@ -94,15 +95,15 @@ class ChildName:
 		else:
 			if isVerbose:
 				if not self._isGoodJinkaku(nameKakusuus):
-					print "Bad Jinkaku."
+					print("Bad Jinkaku.")
 				elif not self._isGoodChikaku(nameKakusuus):
-					print "Bad Chikaku."
+					print("Bad Chikaku.")
 				elif not self._isGoodGaikaku(nameKakusuus):
-					print "Bad Gaikaku."
+					print("Bad Gaikaku.")
 				elif not self._isGoodSoukaku(nameKakusuus):
-					print "Bad Soukaku."
+					print("Bad Soukaku.")
 				elif (self._onmyoSeqCheck and (not self._isGoodOnmyoSequence(nameKakusuus))):
-					print "Bad Onmyo sequence."
+					print("Bad Onmyo sequence.")
 			return False
 	
 	def _isForbiddenNameFirstKakusuu(self, nameFirstKakusuu):
@@ -115,57 +116,57 @@ class ChildName:
 	
 		# Two letters
 		if isVerbose:
-			print "Start two letter kakusuu search."
+			print("Start two letter kakusuu search.")
 		twoLetterAnswer = []
 		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
 			if isVerbose:
-				print "i: " + str(i)
+				print("i: " + str(i))
 			if self._isForbiddenNameFirstKakusuu(i):
 				if isVerbose:
-					print "The kakusuu was found in the forbidden list. Skip."
+					print("The kakusuu was found in the forbidden list. Skip.")
 				continue
 			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
 				nameKakusuus = [i, j]
 				if isVerbose:
-					print "Kakusuu: " + str(nameKakusuus)
+					print("Kakusuu: " + str(nameKakusuus))
 				if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
 					twoLetterAnswer.append(nameKakusuus)
 	
 		if isVerbose:
-			print "End two letter kakusuu search."
+			print("End two letter kakusuu search.")
 
 		# Three letters
 		if isVerbose:
-			print "Start three letter kakusuu search."
+			print("Start three letter kakusuu search.")
 		threeLetterAnswer = []
 		for i in range(minLetterKakusuu, maxLetterKakusuu + 1):
 			if isVerbose:
-				print "i: " + str(i)
+				print("i: " + str(i))
 			if self._isForbiddenNameFirstKakusuu(i):
 				if isVerbose:
-					print "The kakusuu was found in the forbidden list. Skip."
+					print("The kakusuu was found in the forbidden list. Skip.")
 				continue
 			for j in range(minLetterKakusuu, maxLetterKakusuu + 1):
 				for k in range(minLetterKakusuu, maxLetterKakusuu + 1):
 					nameKakusuus = [i, j, k]
 					if isVerbose:
-						print "Kakusuu: " + str(nameKakusuus)
+						print("Kakusuu: " + str(nameKakusuus))
 					if(self._isGoodKakusuu(nameKakusuus, isVerbose)):
 						threeLetterAnswer.append(nameKakusuus)
 	
 		if isVerbose:
-			print "End three letter kakusuu search."
+			print("End three letter kakusuu search.")
 	
 	
-		print "==== Two letters ===="
-		print str(len(twoLetterAnswer)) + " combinations found."
+		print("==== Two letters ====")
+		print(str(len(twoLetterAnswer)) + " combinations found.")
 		for i in twoLetterAnswer:
-			print i
+			print(i)
 	
-		print "==== Three letters ===="
-		print str(len(threeLetterAnswer)) + " combinations found."
+		print("==== Three letters ====")
+		print(str(len(threeLetterAnswer)) + " combinations found.")
 		for i in threeLetterAnswer:
-			print i
+			print(i)
 
 
 def main():
